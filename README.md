@@ -22,4 +22,4 @@ A estrutura utiliza:
 - Abraão Franco
 - Pedro Luís
 - João Pedro
-- Sidney
+- Sidney André
