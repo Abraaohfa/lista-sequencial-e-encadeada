@@ -90,6 +90,7 @@ void Menu() {
     printf("\n========================================");
     printf("\n [1] Cadastrar Aluno (Ordenado)");
     printf("\n [2] Mostrar Todos os Alunos");
+    printf("\n [3] Buscar Aluno por RGM");
     printf("\n [4] Remover Aluno por RGM"); 
     printf("\n [0] Sair do Programa");
     printf("\n========================================");
@@ -134,6 +135,41 @@ void remover(ListaAlunos *l) {
     printf("\n--- Lista Resultante ---\n");
     mostrarTodos(l); 
 }
+
+void buscar(ListaAlunos *l) {
+    int rgm, i, encontrado = 0;
+    Disciplina *d;
+
+    printf("Digite o RGM para buscar: ");
+    scanf("%d", &rgm);
+
+    // percorre a lista de alunos para procurar o RGM informado
+    for (i = 0; i < l->n; i++) {
+        if (l->dados[i].rgm == rgm) {
+
+            // se encontrar, exibe os dados do aluno
+            printf("\nAluno encontrado!\n");
+            printf("RGM: %d\n", l->dados[i].rgm);
+
+            // percorre a lista encadeada de disciplinas do aluno
+            d = l->dados[i].disciplinas;
+
+            // verifica se o aluno possui disciplinas cadastradas
+            if (d == NULL) {
+                printf("  Nenhuma disciplina cadastrada.\n");
+            } else {
+                // exibe todas as disciplinas e notas
+                while (d != NULL) {
+                    printf("  %s - %.1f\n", d->nome, d->nota);
+                    d = d->prox;
+                }
+            }
+
+            // marca que o aluno foi encontrado
+            encontrado = 1;
+            break;
+        }
+    }
 
 int main() {
     ListaAlunos lista;
