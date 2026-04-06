@@ -75,18 +75,98 @@ void mostrarTodos(ListaAlunos *l) {
         while (d) { printf("  %s - %.1f\n", d->nome, d->nota); d = d->prox; }
     }
 }
+// parte do trabalho joao pedro: remover aluno por rgm e menu
+// Funcao auxiliar para limpar o teclado
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+
+//INTERFACE DO MENU 
+void Menu() {
+    printf("\n========================================");
+    printf("\n            GESTAO ACADEMICA            ");
+    printf("\n========================================");
+    printf("\n [1] Cadastrar Aluno (Ordenado)");
+    printf("\n [2] Mostrar Todos os Alunos");
+    printf("\n [4] Remover Aluno por RGM"); 
+    printf("\n [0] Sair do Programa");
+    printf("\n========================================");
+    printf("\n > Opcao: ");
+}
+    
+
+
+void remover(ListaAlunos *l) {
+    int rgm, i, pos = -1;
+    printf("Digite o RGM para remover: ");
+    scanf("%d", &rgm);
+
+    // aqui ele Procura o aluno na lista sequencial
+    for (i = 0; i < l->n; i++) {
+        if (l->dados[i].rgm == rgm) {
+            pos = i;
+            break;
+        }
+    }
+    // CASO O INDICE QUE FOI PASSADO SEJA = -1, VAI MOSTRAR QUE O ALUNO NAO FOI ENCONTRADO
+    if (pos == -1) {
+        printf("Aluno nao encontrado.\n");
+        return;
+    }
+
+    // 2. Limpa a memoria das disciplinas (lista encadeada) antes de excluir o aluno
+    Disciplina *d = l->dados[pos].disciplinas;
+    while (d != NULL) {
+        Disciplina *aux = d;
+        d = d->prox;
+        free(aux);
+    }
+
+    //   ele desloca os alunos para esquerda para tampar o buraco do aluno removido
+    for (i = pos; i < l->n - 1; i++) {
+        l->dados[i] = l->dados[i + 1];
+    }
+    l->n--;
+
+    printf("Aluno removido com sucesso.\n");
+    printf("\n--- Lista Resultante ---\n");
+    mostrarTodos(l); 
+}
 
 int main() {
     ListaAlunos lista;
-    int op;
+    int opcao;
     iniciarlista(&lista);
-
+// TRATAMENTO DE ERRO, caso a pessoa coloque uma letra ou simbolo, o programa nao trave
     do {
-        printf("\n1-Cadastrar  2-Mostrar  0-Sair\n> ");
-        scanf("%d", &op);
-        if (op == 1) cadastrar(&lista);
-        else if (op == 2) mostrarTodos(&lista);
-    } while (op != 0);
+        Menu();
+       
+        if (scanf("%d", &opcao) != 1) { 
+            limparBuffer(); 
+            continue; 
+        }
+        limparBuffer();
+
+        switch(opcao) {
+            case 1: 
+                cadastrar(&lista); 
+                break;
+            case 2: 
+                mostrarTodos(&lista); 
+                break;
+            case 4: 
+                remover(&lista); 
+                break;
+            case 0: 
+                printf("Saindo...\n"); 
+                break;
+            default: 
+                printf("Opcao invalida\n"); 
+                break;
+        }
+    } while (opcao != 0);
 
     return 0;
 }
