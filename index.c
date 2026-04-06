@@ -156,6 +156,8 @@ int main() {
             case 2: 
                 mostrarTodos(&lista); 
                 break;
+            case 3:buscar(&lista);
+                break;
             case 4: 
                 remover(&lista); 
                 break;
