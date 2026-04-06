@@ -116,7 +116,7 @@ void remover(ListaAlunos *l) {
         return;
     }
 
-    // 2. Limpa a memoria das disciplinas (lista encadeada) antes de excluir o aluno
+    //  Limpa a memoria das disciplinas (lista encadeada) antes de excluir o aluno
     Disciplina *d = l->dados[pos].disciplinas;
     while (d != NULL) {
         Disciplina *aux = d;
@@ -124,7 +124,7 @@ void remover(ListaAlunos *l) {
         free(aux);
     }
 
-    //   ele desloca os alunos para esquerda para tampar o buraco do aluno removido
+    //  desloca os alunos para esquerda para tampar o buraco do aluno removido
     for (i = pos; i < l->n - 1; i++) {
         l->dados[i] = l->dados[i + 1];
     }
